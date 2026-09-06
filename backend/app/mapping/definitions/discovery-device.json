@@ -1,0 +1,45 @@
+{
+    "mapping_id": "discovery-device",
+    "version": "1.0.0",
+    "source_format": "discovery",
+    "vendor": "ULPF-Scanner",
+    "product": "DeviceScanner",
+    "fields": [
+        {
+            "source_field": "timestamp",
+            "target_field": "event.timestamp",
+            "confidence": 1.0,
+            "required": false
+        },
+        {
+            "source_field": "action",
+            "target_field": "event.action",
+            "confidence": 1.0,
+            "required": false
+        },
+        {
+            "source_field": "ip",
+            "target_field": "source.ip",
+            "confidence": 1.0,
+            "required": false
+        },
+        {
+            "source_field": "hostname",
+            "target_field": "observer.hostname",
+            "confidence": 1.0,
+            "required": false
+        },
+        {
+            "source_field": "discovery_type",
+            "target_field": "network.protocol",
+            "confidence": 1.0,
+            "required": false
+        },
+        {
+            "source_field": "status",
+            "target_field": "security.rule_id",
+            "confidence": 1.0,
+            "required": false
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "mapping_id": "customfirewall-firewall",
+    "version": "1.0",
+    "source_format": "key_value",
+    "vendor": null,
+    "product": null,
+    "fields": [
+        {
+            "source_field": "action",
+            "target_field": "event.action",
+            "confidence": 0.95,
+            "required": false
+        },
+        {
+            "source_field": "custom_severity",
+            "target_field": "event.severity",
+            "confidence": 0.9,
+            "required": false
+        },
+        {
+            "source_field": "srcaddr",
+            "target_field": "source.ip",
+            "confidence": 0.95,
+            "required": false
+        },
+        {
+            "source_field": "dstaddr",
+            "target_field": "destination.ip",
+            "confidence": 0.95,
+            "required": false
+        },
+        {
+            "source_field": "protocol",
+            "target_field": "network.protocol",
+            "confidence": 0.95,
+            "required": false
+        },
+        {
+            "source_field": "threat_name",
+            "target_field": "security.threat",
+            "confidence": 0.9,
+            "required": false
+        }
+    ]
+}

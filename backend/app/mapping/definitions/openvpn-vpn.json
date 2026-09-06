@@ -1,0 +1,39 @@
+{
+  "mapping_id": "openvpn-vpn",
+  "version": "1.0.0",
+  "source_format": "openvpn",
+  "vendor": "OpenVPN",
+  "product": "VPN",
+  "fields": [
+    {
+      "source_field": "timestamp",
+      "target_field": "event.timestamp",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "action",
+      "target_field": "event.action",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "src",
+      "target_field": "source.ip",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "vpn_ip",
+      "target_field": "source.vpn_ip",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "user",
+      "target_field": "user.name",
+      "confidence": 1.0,
+      "required": true
+    }
+  ]
+}

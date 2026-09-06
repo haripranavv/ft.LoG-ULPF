@@ -1,0 +1,63 @@
+{
+  "mapping_id": "suricata-ids",
+  "version": "1.0.0",
+  "source_format": "suricata",
+  "vendor": "OISF",
+  "product": "Suricata IDS",
+  "fields": [
+    {
+      "source_field": "timestamp",
+      "target_field": "event.timestamp",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "event_type",
+      "target_field": "event.category",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "src_ip",
+      "target_field": "source.ip",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "src_port",
+      "target_field": "source.port",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "dest_ip",
+      "target_field": "destination.ip",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "dest_port",
+      "target_field": "destination.port",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "proto",
+      "target_field": "network.protocol",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "signature",
+      "target_field": "security.threat",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "severity",
+      "target_field": "event.severity",
+      "confidence": 1.0,
+      "required": false
+    }
+  ]
+}

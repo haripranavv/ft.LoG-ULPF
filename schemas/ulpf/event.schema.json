@@ -1,0 +1,293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ulpf://schema/event/1.0.0",
+  "title": "ULPF Canonical Security Event",
+  "description": "Versioned, lossless, vendor-neutral canonical event schema for the Universal Log Pre-processing Framework.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event",
+    "timestamp",
+    "ulpf",
+    "provenance",
+    "raw"
+  ],
+  "properties": {
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "category",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "outcome": {
+          "type": "string"
+        }
+      }
+    },
+
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "source": {
+      "$ref": "#/$defs/networkEndpoint"
+    },
+
+    "destination": {
+      "$ref": "#/$defs/networkEndpoint"
+    },
+
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "transport": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "bytes_in": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bytes_out": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+
+    "observer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vendor": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "device_type": {
+          "type": "string"
+        }
+      }
+    },
+
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "threat": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        }
+      }
+    },
+
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "extensions": {
+      "type": "object",
+      "description": "Vendor-specific fields that cannot or should not be mapped into the universal taxonomy.",
+      "additionalProperties": true
+    },
+
+    "ulpf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "source_format",
+        "normalization_status"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "source_format": {
+          "type": "string"
+        },
+        "parser_name": {
+          "type": "string"
+        },
+        "parser_version": {
+          "type": "string"
+        },
+        "mapping_id": {
+          "type": "string"
+        },
+        "mapping_version": {
+          "type": "string"
+        },
+        "normalization_status": {
+          "type": "string",
+          "enum": [
+            "success",
+            "partial",
+            "failed"
+          ]
+        },
+        "processing_mode": {
+          "type": "string",
+          "enum": [
+            "deterministic",
+            "ai_assisted",
+            "replay"
+          ]
+        }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trace_id",
+        "raw_event_hash",
+        "hash_algorithm"
+      ],
+      "properties": {
+        "trace_id": {
+          "type": "string"
+        },
+        "raw_event_hash": {
+          "type": "string"
+        },
+        "hash_algorithm": {
+          "type": "string",
+          "enum": [
+            "SHA-256"
+          ]
+        },
+        "ingestion_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "processing_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "collector_id": {
+          "type": "string"
+        },
+        "parent_event_id": {
+          "type": "string"
+        }
+      }
+    },
+
+    "raw": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preserved",
+        "encoding",
+        "payload"
+      ],
+      "properties": {
+        "preserved": {
+          "const": true
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "content_type": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "string"
+        },
+        "storage_ref": {
+          "type": "string"
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "networkEndpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "hostname": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

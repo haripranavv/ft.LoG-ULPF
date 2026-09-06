@@ -1,0 +1,48 @@
+# Python virtual environments
+.venv/
+venv/
+ai-venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Local AI models
+*.gguf
+models/**/*.gguf
+
+# Java / Flink binaries
+*.jar
+
+# Build output
+dist/
+build/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated storage
+backend/app/storage/discovered_devices.json

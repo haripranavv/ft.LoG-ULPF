@@ -1,0 +1,39 @@
+{
+  "mapping_id": "cisco-ios-router",
+  "version": "1.0.0",
+  "source_format": "cisco_ios",
+  "vendor": "Cisco",
+  "product": "IOS Router",
+  "fields": [
+    {
+      "source_field": "timestamp",
+      "target_field": "event.timestamp",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "message",
+      "target_field": "event.message",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "facility",
+      "target_field": "event.category",
+      "confidence": 0.95,
+      "required": false
+    },
+    {
+      "source_field": "severity",
+      "target_field": "event.severity",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "device",
+      "target_field": "host.name",
+      "confidence": 1.0,
+      "required": false
+    }
+  ]
+}

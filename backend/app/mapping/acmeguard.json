@@ -1,0 +1,69 @@
+{
+  "mapping_id": "acmeguard-firewall",
+  "version": "1.0.0",
+  "source_format": "acmeguard",
+  "vendor": "AcmeGuard",
+  "product": "Firewall",
+  "fields": [
+    {
+      "source_field": "timestamp",
+      "target_field": "event.timestamp",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "action",
+      "target_field": "event.action",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "src",
+      "target_field": "source.ip",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "sport",
+      "target_field": "source.port",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "dst",
+      "target_field": "destination.ip",
+      "confidence": 1.0,
+      "required": true
+    },
+    {
+      "source_field": "dport",
+      "target_field": "destination.port",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "protocol",
+      "target_field": "network.protocol",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "rule",
+      "target_field": "security.rule_id",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "threat",
+      "target_field": "security.threat",
+      "confidence": 1.0,
+      "required": false
+    },
+    {
+      "source_field": "user",
+      "target_field": "user.name",
+      "confidence": 1.0,
+      "required": false
+    }
+  ]
+}
