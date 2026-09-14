@@ -25,6 +25,7 @@ class MappingApprovalRequest(BaseModel):
     fields: list[FieldMapping] = Field(min_length=1)
 
 
+@router.post("")
 @router.post("/approve")
 def approve_mapping(
     request: MappingApprovalRequest,

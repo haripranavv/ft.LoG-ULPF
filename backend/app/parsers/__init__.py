@@ -8,20 +8,25 @@ from .cef import CEFParser
 from .json_parser import JSONParser
 from .syslog import SyslogParser
 from .key_value import KeyValueParser
+from .csv_parser import CSVParser
+from .yaml_parser import YAMLParser
+
 
 class ParserRegistry:
     def __init__(self) -> None:
         self.parsers: list[BaseParser] = [
-    AcmeGuardParser(),
-    OpenVPNParser(),
-    CiscoIOSParser(),
-    SuricataParser(),
-    DiscoveryParser(),
-    CEFParser(),
-    JSONParser(),
-    SyslogParser(),
-    KeyValueParser(),
-]
+            AcmeGuardParser(),
+            OpenVPNParser(),
+            CiscoIOSParser(),
+            SuricataParser(),
+            DiscoveryParser(),
+            CEFParser(),
+            JSONParser(),
+            SyslogParser(),
+            KeyValueParser(),
+            CSVParser(),
+            YAMLParser(),
+        ]
 
     def parse(self, raw_payload: str) -> ParsedEvent:
         for parser in self.parsers:

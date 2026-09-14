@@ -1,0 +1,10 @@
+.venv
+.venv/**
+**/.venv
+**/.venv/**
+**/__pycache__
+**/*.pyc
+storage/raw/**
+**/.pytest_cache
+tests/**
+test_*.py

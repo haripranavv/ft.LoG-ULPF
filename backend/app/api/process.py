@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.processing.processor import ULPFProcessor
-from app.storage.event_store import store_event
+from app.storage.event_store import store_event, store_events_batch
 
 
 router = APIRouter(
@@ -117,6 +117,7 @@ def upload_log(
         invalid_count = 0
         assisted_count = 0
         items_result: list[dict[str, Any]] = []
+        valid_events_to_store: list[dict[str, Any]] = []
 
         for idx, log_payload in enumerate(raw_logs):
             try:
@@ -126,7 +127,7 @@ def upload_log(
                 mode = proc.get("mode", "deterministic")
 
                 if is_valid:
-                    store_event(res)
+                    valid_events_to_store.append(res)
                     valid_count += 1
                 else:
                     if mode == "assisted":
@@ -160,6 +161,10 @@ def upload_log(
                     "mode": "error",
                     "errors": [str(err)],
                 })
+
+        # High-performance batch insertion
+        if valid_events_to_store:
+            store_events_batch(valid_events_to_store)
 
         return {
             "status": "completed",

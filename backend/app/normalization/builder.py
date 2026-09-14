@@ -46,23 +46,65 @@ class CanonicalEventBuilder:
         network_data = normalized.get("network", {})
         security_data = normalized.get("security", {})
         user_data = normalized.get("user", {})
+        observer_data = normalized.get("observer", {})
+
+        action = event_data.get("action")
+        action_lower = str(action or "").lower()
+        name_val = source_fields.get("name") if source_fields else None
+        name_lower = str(name_val or "").lower()
+
+        # Infer category
+        category = event_data.get("category")
+        if not category:
+            if action_lower in ("login", "logon", "auth", "authenticate") or any(w in name_lower for w in ["login", "auth", "vpn user"]):
+                category = "authentication"
+            elif action_lower in ("drop", "block", "deny", "allow", "permit"):
+                category = "network"
+            else:
+                category = self._infer_category(source_format)
+
+        # Infer type
+        event_type = event_data.get("type")
+        if not event_type:
+            if action_lower in ("login", "logon", "auth", "authenticate") or any(w in name_lower for w in ["login", "auth", "vpn user"]):
+                event_type = "authentication"
+            elif action_lower in ("drop", "block", "deny"):
+                event_type = "denied"
+            elif action_lower in ("allow", "permit"):
+                event_type = "allowed"
+            else:
+                event_type = self._infer_type(source_format)
+
+        # Infer outcome (explicit from event_data first, then fallback to action inference)
+        outcome = event_data.get("outcome") or self._infer_outcome(action)
+
+        # Observer version
+        obs_version = observer_data.get("version")
+        if not obs_version and source_fields:
+            obs_version = source_fields.get("device_version") or source_fields.get("cef_version")
+
+        # Security signature
+        sec_signature = security_data.get("signature")
+        if not sec_signature and source_fields and "signature_id" in source_fields:
+            sec_signature = str(source_fields["signature_id"])
 
         extensions = {}
-
         if source_fields:
             extensions["source_fields"] = source_fields
+        if "message" in event_data:
+            extensions["message"] = event_data["message"]
 
         return ULPFEvent(
             event=EventIdentity(
                 id=trace_id,
                 kind="event",
-                category=event_data.get("category") or self._infer_category(source_format),
-                type=self._infer_type(source_format),
-                action=event_data.get("action"),
+                category=category,
+                type=event_type,
+                action=action,
                 severity=self._normalize_severity(
-    event_data.get("severity")
-),
-                outcome=self._infer_outcome(event_data.get("action")),
+                    event_data.get("severity")
+                ),
+                outcome=outcome,
             ),
             timestamp=timestamp,
             source=NetworkEndpoint(
@@ -79,6 +121,7 @@ class CanonicalEventBuilder:
             observer=Observer(
                 vendor=vendor,
                 product=product,
+                version=obs_version,
             ),
             user=UserInfo(
                 name=user_data.get("name"),
@@ -86,6 +129,7 @@ class CanonicalEventBuilder:
             security=SecurityInfo(
                 rule_id=security_data.get("rule_id"),
                 threat=security_data.get("threat"),
+                signature=sec_signature,
             ),
             labels=[],
             extensions=extensions,
@@ -151,6 +195,9 @@ class CanonicalEventBuilder:
             "openvpn": "authentication",
             "cisco_ios": "network",
             "suricata": "intrusion_detection",
+            "cef": "security_event",
+            "syslog": "system",
+            "key_value": "network",
         }
 
         return categories.get(source_format, "unknown")
@@ -161,6 +208,9 @@ class CanonicalEventBuilder:
             "openvpn": "vpn",
             "cisco_ios": "router",
             "suricata": "ids_alert",
+            "cef": "security_event",
+            "syslog": "syslog",
+            "key_value": "network_event",
         }
 
         return types.get(source_format, "unknown")
@@ -173,10 +223,21 @@ class CanonicalEventBuilder:
 
         outcomes = {
             "ALLOW": "success",
+            "PERMIT": "success",
+            "ACCEPT": "success",
+            "ACCEPTED": "success",
             "CONNECTED": "success",
             "DISCONNECTED": "success",
+            "LOGIN": "success",
+            "LOGON": "success",
+            "AUTHENTICATE": "success",
+            "AUTHENTICATED": "success",
             "DENY": "failure",
             "BLOCK": "failure",
+            "DROP": "failure",
+            "REJECT": "failure",
+            "FAILED": "failure",
+            "FAIL": "failure",
         }
 
         return outcomes.get(action)

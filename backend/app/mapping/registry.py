@@ -36,35 +36,41 @@ class MappingRegistry:
         product: str | None = None,
     ) -> MappingDefinition:
 
-        candidates = [
+        format_matches = [
             mapping
             for mapping in self._mappings
             if mapping.source_format == source_format
         ]
 
-        if vendor:
-            candidates = [
-                mapping
-                for mapping in candidates
-                if mapping.vendor == vendor
-            ]
-
-        if product:
-            candidates = [
-                mapping
-                for mapping in candidates
-                if mapping.product == product
-            ]
-
-        if not candidates:
+        if not format_matches:
             raise ValueError(
-                "No mapping registered for "
-                f"source_format={source_format}, "
-                f"vendor={vendor}, "
-                f"product={product}"
+                f"No mapping registered for source_format={source_format}"
             )
 
-        return candidates[0]
+        # 1. Exact match (format, vendor, product)
+        if vendor and product:
+            exact = [m for m in format_matches if m.vendor == vendor and m.product == product]
+            if exact:
+                return exact[0]
+
+        # 2. Match format and vendor
+        if vendor:
+            vendor_match = [m for m in format_matches if m.vendor == vendor]
+            if vendor_match:
+                return vendor_match[0]
+
+        # 3. Generic fallback mapping (where vendor is None or matches "generic")
+        generic_match = [m for m in format_matches if not m.vendor or m.vendor.lower() == "generic"]
+        if generic_match:
+            return generic_match[0]
+
+        # No suitable mapping found
+        raise ValueError(
+            "No mapping registered for "
+            f"source_format={source_format}, "
+            f"vendor={vendor}, "
+            f"product={product}"
+        )
 
     def list_all(self) -> list[MappingDefinition]:
         return self._mappings.copy()

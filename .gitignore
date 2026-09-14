@@ -1,48 +1,53 @@
-# Python virtual environments
+# Python
 .venv/
 venv/
+.venv-*/
 ai-venv/
 env/
-
-# Python cache
 __pycache__/
 *.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
 
 # Node
 node_modules/
 frontend/node_modules/
+frontend/dist/
 
-# Environment files
-.env
-.env.*
-
-# Local AI models
+# AI models & weights
 *.gguf
 models/**/*.gguf
 
-# Java / Flink binaries
-*.jar
+# Environment & local secrets
+.env
+.env.*
+!.env.example
 
-# Build output
-dist/
-build/
-frontend/dist/
-
-# IDE
+# IDE & Editor
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# Java & Flink binaries
+*.jar
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Local databases
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Databases & local storage caches
 *.db
 *.sqlite
 *.sqlite3
-
-# Generated storage
 backend/app/storage/discovered_devices.json
+backend/app/storage/raw/
+backend/storage/

@@ -2,8 +2,8 @@
     "mapping_id": "customfirewall-firewall",
     "version": "1.0",
     "source_format": "key_value",
-    "vendor": null,
-    "product": null,
+    "vendor": "CustomFirewall",
+    "product": "Firewall",
     "fields": [
         {
             "source_field": "action",
